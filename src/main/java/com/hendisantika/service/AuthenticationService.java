@@ -2,6 +2,7 @@ package com.hendisantika.service;
 
 import com.hendisantika.entity.AuthenticationToken;
 import com.hendisantika.entity.User;
+import com.hendisantika.exception.AuthenticationFailException;
 import com.hendisantika.repository.TokenRepository;
 import com.hendisantika.util.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,14 @@ public class AuthenticationService {
             }
         }
         return null;
+    }
+
+    public void authenticate(String token) throws AuthenticationFailException {
+        if (!Helper.notNull(token)) {
+            throw new AuthenticationFailException(MessageStrings.AUTH_TOEKN_NOT_PRESENT);
+        }
+        if (!Helper.notNull(getUser(token))) {
+            throw new AuthenticationFailException(MessageStrings.AUTH_TOEKN_NOT_VALID);
+        }
     }
 }
