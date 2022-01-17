@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,5 +46,20 @@ public class CategoryController {
         }
         categoryService.createCategory(category);
         return new ResponseEntity<>(new ApiResponse(true, "created the category"), HttpStatus.CREATED);
+    }
+
+    //TODO create an UPDATE method Giridhar
+    @PostMapping("/update/{categoryID}")
+    public ResponseEntity<ApiResponse> updateCategory(@PathVariable("categoryID") long categoryID,
+                                                      @Valid @RequestBody Category category) {
+        // Check to see if the category exists.
+        if (Helper.notNull(categoryService.readCategory(categoryID))) {
+            // If the category exists then update it.
+            categoryService.updateCategory(categoryID, category);
+            return new ResponseEntity<>(new ApiResponse(true, "updated the category"), HttpStatus.OK);
+        }
+
+        // If the category doesn't exist then return a response of unsuccessful.
+        return new ResponseEntity<>(new ApiResponse(false, "category does not exist"), HttpStatus.NOT_FOUND);
     }
 }
