@@ -1,13 +1,18 @@
 package com.hendisantika.controller;
 
+import com.hendisantika.dto.ResponseDto;
+import com.hendisantika.dto.SignupDto;
 import com.hendisantika.entity.User;
 import com.hendisantika.exception.AuthenticationFailException;
+import com.hendisantika.exception.CustomException;
 import com.hendisantika.repository.UserRepository;
 import com.hendisantika.service.AuthenticationService;
 import com.hendisantika.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,5 +46,10 @@ public class UserController {
     public List<User> findAllUser(@RequestParam("token") String token) throws AuthenticationFailException {
         authenticationService.authenticate(token);
         return userRepository.findAll();
+    }
+
+    @PostMapping("/signup")
+    public ResponseDto Signup(@RequestBody SignupDto signupDto) throws CustomException {
+        return userService.signUp(signupDto);
     }
 }
