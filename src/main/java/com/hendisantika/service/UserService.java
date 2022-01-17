@@ -1,10 +1,22 @@
 package com.hendisantika.service;
 
+import com.hendisantika.dto.ResponseDto;
+import com.hendisantika.dto.SignupDto;
+import com.hendisantika.entity.AuthenticationToken;
+import com.hendisantika.entity.ResponseStatus;
+import com.hendisantika.entity.Role;
+import com.hendisantika.entity.User;
+import com.hendisantika.exception.CustomException;
 import com.hendisantika.repository.UserRepository;
+import com.hendisantika.util.Helper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.security.NoSuchAlgorithmException;
+
+import static com.hendisantika.config.MessageStrings.USER_CREATED;
 
 /**
  * Created by IntelliJ IDEA.
@@ -23,4 +35,40 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private AuthenticationService authenticationService;
+
+    public ResponseDto signUp(SignupDto signupDto) throws CustomException {
+        // Check to see if the current email address has already been registered.
+        if (Helper.notNull(userRepository.findByEmail(signupDto.getEmail()))) {
+            // If the email address has been registered then throw an exception.
+            throw new CustomException("User already exists");
+        }
+        // first encrypt the password
+        String encryptedPassword = signupDto.getPassword();
+        try {
+            encryptedPassword = hashPassword(signupDto.getPassword());
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            logger.error("hashing password failed {}", e.getMessage());
+        }
+
+
+        User user = new User(signupDto.getFirstName(), signupDto.getLastName(), signupDto.getEmail(), Role.user,
+                encryptedPassword);
+
+        User createdUser;
+        try {
+            // save the User
+            createdUser = userRepository.save(user);
+            // generate token for user
+            final AuthenticationToken authenticationToken = new AuthenticationToken(createdUser);
+            // save token in database
+            authenticationService.saveConfirmationToken(authenticationToken);
+            // success in creating
+            return new ResponseDto(ResponseStatus.success.toString(), USER_CREATED);
+        } catch (Exception e) {
+            // handle signup error
+            throw new CustomException(e.getMessage());
+        }
+    }
+
 }

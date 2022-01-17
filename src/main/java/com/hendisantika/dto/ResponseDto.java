@@ -1,5 +1,6 @@
 package com.hendisantika.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -12,6 +13,7 @@ import lombok.Data;
  * Time: 07.57
  */
 @Data
+@AllArgsConstructor
 public class ResponseDto {
     private String status;
     private String message;
