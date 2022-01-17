@@ -1,8 +1,13 @@
 package com.hendisantika.service;
 
+import com.hendisantika.dto.ProductDto;
+import com.hendisantika.entity.Product;
 import com.hendisantika.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,4 +22,14 @@ import org.springframework.stereotype.Service;
 public class ProductService {
     @Autowired
     private ProductRepository productRepository;
+
+    public List<ProductDto> listProducts() {
+        List<Product> products = productRepository.findAll();
+        List<ProductDto> productDtos = new ArrayList<>();
+        for (Product product : products) {
+            ProductDto productDto = getDtoFromProduct(product);
+            productDtos.add(productDto);
+        }
+        return productDtos;
+    }
 }
