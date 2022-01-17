@@ -145,4 +145,7 @@ public class UserService {
 
     }
 
+    private boolean canCrudUser(Role role) {
+        return role == Role.admin || role == Role.manager;
+    }
 }
