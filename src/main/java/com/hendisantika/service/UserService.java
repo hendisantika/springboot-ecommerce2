@@ -5,6 +5,7 @@ import com.hendisantika.dto.ResponseDto;
 import com.hendisantika.dto.SignInDto;
 import com.hendisantika.dto.SignInResponseDto;
 import com.hendisantika.dto.SignupDto;
+import com.hendisantika.dto.UserCreateDto;
 import com.hendisantika.entity.AuthenticationToken;
 import com.hendisantika.entity.ResponseStatus;
 import com.hendisantika.entity.Role;
@@ -112,6 +113,36 @@ public class UserService {
         String myHash = DatatypeConverter
                 .printHexBinary(digest).toUpperCase();
         return myHash;
+    }
+
+    public ResponseDto createUser(String token, UserCreateDto userCreateDto) throws CustomException,
+            AuthenticationFailException {
+        User creatingUser = authenticationService.getUser(token);
+        if (!canCrudUser(creatingUser.getRole())) {
+            // user can't create new user
+            throw new AuthenticationFailException(MessageStrings.USER_NOT_PERMITTED);
+        }
+        String encryptedPassword = userCreateDto.getPassword();
+        try {
+            encryptedPassword = hashPassword(userCreateDto.getPassword());
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            logger.error("hashing password failed {}", e.getMessage());
+        }
+
+        User user = new User(userCreateDto.getFirstName(), userCreateDto.getLastName(), userCreateDto.getEmail(),
+                userCreateDto.getRole(), encryptedPassword);
+        User createdUser;
+        try {
+            createdUser = userRepository.save(user);
+            final AuthenticationToken authenticationToken = new AuthenticationToken(createdUser);
+            authenticationService.saveConfirmationToken(authenticationToken);
+            return new ResponseDto(ResponseStatus.success.toString(), USER_CREATED);
+        } catch (Exception e) {
+            // handle user creation fail error
+            throw new CustomException(e.getMessage());
+        }
+
     }
 
 }
