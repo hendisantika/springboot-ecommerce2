@@ -1,5 +1,6 @@
 package com.hendisantika.service;
 
+import com.hendisantika.config.MessageStrings;
 import com.hendisantika.entity.AuthenticationToken;
 import com.hendisantika.entity.User;
 import com.hendisantika.exception.AuthenticationFailException;
@@ -43,10 +44,10 @@ public class AuthenticationService {
 
     public void authenticate(String token) throws AuthenticationFailException {
         if (!Helper.notNull(token)) {
-            throw new AuthenticationFailException(MessageStrings.AUTH_TOEKN_NOT_PRESENT);
+            throw new AuthenticationFailException(MessageStrings.AUTH_TOKEN_NOT_PRESENT);
         }
         if (!Helper.notNull(getUser(token))) {
-            throw new AuthenticationFailException(MessageStrings.AUTH_TOEKN_NOT_VALID);
+            throw new AuthenticationFailException(MessageStrings.AUTH_TOKEN_NOT_VALID);
         }
     }
 }
