@@ -1,8 +1,11 @@
 package com.hendisantika.service;
 
+import com.hendisantika.entity.Category;
 import com.hendisantika.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 
 /**
@@ -18,5 +21,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CategoryService {
 
-    private final CategoryRepository categoryrepository;
+    private final CategoryRepository categoryRepository;
+
+    public CategoryService(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
+
+    public List<Category> listCategories() {
+        return categoryRepository.findAll();
+    }
 }
