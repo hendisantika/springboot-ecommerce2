@@ -1,5 +1,6 @@
 package com.hendisantika.service;
 
+import com.hendisantika.entity.UserProfile;
 import com.hendisantika.repository.UserProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,4 +19,8 @@ public class UserProfileService {
 
     @Autowired
     private UserProfileRepository userRepo;
+
+    public void addProfile(UserProfile userProfile) {
+        userRepo.save(userProfile);
+    }
 }
