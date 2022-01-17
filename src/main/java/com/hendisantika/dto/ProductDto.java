@@ -1,5 +1,6 @@
 package com.hendisantika.dto;
 
+import com.hendisantika.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
