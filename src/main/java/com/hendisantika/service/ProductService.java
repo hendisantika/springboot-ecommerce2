@@ -43,4 +43,9 @@ public class ProductService {
         Product product = new Product(productDto, category);
         return product;
     }
+
+    public void addProduct(ProductDto productDto, Category category) {
+        Product product = getProductFromDto(productDto, category);
+        productRepository.save(product);
+    }
 }
