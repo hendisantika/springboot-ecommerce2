@@ -9,5 +9,8 @@ package com.hendisantika.exception;
  * Date: 17/01/22
  * Time: 08.29
  */
-public class AuthenticationFailException extends Exception {
+public class AuthenticationFailException extends IllegalArgumentException {
+    public AuthenticationFailException(String msg) {
+        super(msg);
+    }
 }
