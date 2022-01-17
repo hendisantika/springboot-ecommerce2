@@ -2,8 +2,11 @@ package com.hendisantika.controller;
 
 import com.hendisantika.service.FileStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,4 +24,8 @@ public class FileUploadController {
     @Autowired
     private FileStoreService fileStoreService;
 
+    @PostMapping("/")
+    public String handleFileUpload(@RequestParam("file") MultipartFile file) {
+        return fileStoreService.store(file);
+    }
 }
