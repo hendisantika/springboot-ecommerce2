@@ -1,6 +1,7 @@
 package com.hendisantika.service;
 
 import com.hendisantika.dto.ProductDto;
+import com.hendisantika.entity.Category;
 import com.hendisantika.entity.Product;
 import com.hendisantika.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +37,10 @@ public class ProductService {
     public static ProductDto getDtoFromProduct(Product product) {
         ProductDto productDto = new ProductDto(product);
         return productDto;
+    }
+
+    public static Product getProductFromDto(ProductDto productDto, Category category) {
+        Product product = new Product(productDto, category);
+        return product;
     }
 }
