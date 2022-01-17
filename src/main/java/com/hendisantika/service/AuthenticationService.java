@@ -1,5 +1,6 @@
 package com.hendisantika.service;
 
+import com.hendisantika.entity.AuthenticationToken;
 import com.hendisantika.repository.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,5 +18,9 @@ import org.springframework.stereotype.Service;
 public class AuthenticationService {
 
     @Autowired
-    private TokenRepository repository;
+    private TokenRepository tokenRepository;
+
+    public void saveConfirmationToken(AuthenticationToken authenticationToken) {
+        tokenRepository.save(authenticationToken);
+    }
 }
