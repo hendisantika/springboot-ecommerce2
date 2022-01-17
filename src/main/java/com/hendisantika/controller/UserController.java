@@ -1,12 +1,18 @@
 package com.hendisantika.controller;
 
+import com.hendisantika.entity.User;
+import com.hendisantika.exception.AuthenticationFailException;
 import com.hendisantika.repository.UserRepository;
 import com.hendisantika.service.AuthenticationService;
 import com.hendisantika.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -30,4 +36,10 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @GetMapping("/all")
+    public List<User> findAllUser(@RequestParam("token") String token) throws AuthenticationFailException {
+        authenticationService.authenticate(token);
+        return userRepository.findAll();
+    }
 }
