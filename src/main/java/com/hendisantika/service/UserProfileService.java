@@ -5,6 +5,8 @@ import com.hendisantika.repository.UserProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by IntelliJ IDEA.
  * Project : springboot-ecommerce2
@@ -22,5 +24,9 @@ public class UserProfileService {
 
     public void addProfile(UserProfile userProfile) {
         userRepo.save(userProfile);
+    }
+
+    public List<UserProfile> listProfiles() {
+        return userRepo.findAll();
     }
 }
