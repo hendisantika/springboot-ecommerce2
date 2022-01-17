@@ -32,4 +32,9 @@ public class ProductService {
         }
         return productDtos;
     }
+
+    public static ProductDto getDtoFromProduct(Product product) {
+        ProductDto productDto = new ProductDto(product);
+        return productDto;
+    }
 }
