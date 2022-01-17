@@ -1,11 +1,15 @@
 package com.hendisantika.service;
 
+import com.hendisantika.config.MessageStrings;
 import com.hendisantika.dto.ResponseDto;
+import com.hendisantika.dto.SignInDto;
+import com.hendisantika.dto.SignInResponseDto;
 import com.hendisantika.dto.SignupDto;
 import com.hendisantika.entity.AuthenticationToken;
 import com.hendisantika.entity.ResponseStatus;
 import com.hendisantika.entity.Role;
 import com.hendisantika.entity.User;
+import com.hendisantika.exception.AuthenticationFailException;
 import com.hendisantika.exception.CustomException;
 import com.hendisantika.repository.UserRepository;
 import com.hendisantika.util.Helper;
@@ -69,6 +73,34 @@ public class UserService {
             // handle signup error
             throw new CustomException(e.getMessage());
         }
+    }
+
+    public SignInResponseDto signIn(SignInDto signInDto) throws CustomException {
+        // first find User by email
+        User user = userRepository.findByEmail(signInDto.getEmail());
+        if (!Helper.notNull(user)) {
+            throw new AuthenticationFailException("user not present");
+        }
+        try {
+            // check if password is right
+            if (!user.getPassword().equals(hashPassword(signInDto.getPassword()))) {
+                // passowrd doesnot match
+                throw new AuthenticationFailException(MessageStrings.WRONG_PASSWORD);
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            logger.error("hashing password failed {}", e.getMessage());
+            throw new CustomException(e.getMessage());
+        }
+
+        AuthenticationToken token = authenticationService.getToken(user);
+
+        if (!Helper.notNull(token)) {
+            // token not present
+            throw new CustomException("token not present");
+        }
+
+        return new SignInResponseDto("success", token.getToken());
     }
 
 }
