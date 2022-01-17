@@ -34,4 +34,8 @@ public class CategoryService {
     public void createCategory(Category category) {
         categoryRepository.save(category);
     }
+
+    public Category readCategory(String categoryName) {
+        return categoryRepository.findByCategoryName(categoryName);
+    }
 }
