@@ -1,6 +1,7 @@
 package com.hendisantika.service;
 
 import com.hendisantika.entity.AuthenticationToken;
+import com.hendisantika.entity.User;
 import com.hendisantika.repository.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,5 +23,9 @@ public class AuthenticationService {
 
     public void saveConfirmationToken(AuthenticationToken authenticationToken) {
         tokenRepository.save(authenticationToken);
+    }
+
+    public AuthenticationToken getToken(User user) {
+        return tokenRepository.findTokenByUser(user);
     }
 }
