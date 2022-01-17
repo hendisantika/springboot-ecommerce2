@@ -1,6 +1,8 @@
 package com.hendisantika.controller;
 
 import com.hendisantika.dto.ResponseDto;
+import com.hendisantika.dto.SignInDto;
+import com.hendisantika.dto.SignInResponseDto;
 import com.hendisantika.dto.SignupDto;
 import com.hendisantika.entity.User;
 import com.hendisantika.exception.AuthenticationFailException;
@@ -52,4 +54,24 @@ public class UserController {
     public ResponseDto Signup(@RequestBody SignupDto signupDto) throws CustomException {
         return userService.signUp(signupDto);
     }
+
+    //TODO token should be updated
+    @PostMapping("/signIn")
+    public SignInResponseDto Signup(@RequestBody SignInDto signInDto) throws CustomException {
+        return userService.signIn(signInDto);
+    }
+
+//    @PostMapping("/updateUser")
+//    public ResponseDto updateUser(@RequestParam("token") String token, @RequestBody UserUpdateDto userUpdateDto) {
+//        authenticationService.authenticate(token);
+//        return userService.updateUser(token, userUpdateDto);
+//    }
+
+
+//    @PostMapping("/createUser")
+//    public ResponseDto updateUser(@RequestParam("token") String token, @RequestBody UserCreateDto userCreateDto)
+//            throws CustomException, AuthenticationFailException {
+//        authenticationService.authenticate(token);
+//        return userService.createUser(token, userCreateDto);
+//    }
 }
