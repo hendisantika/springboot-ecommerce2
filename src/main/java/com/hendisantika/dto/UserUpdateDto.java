@@ -1,5 +1,6 @@
 package com.hendisantika.dto;
 
+import com.hendisantika.entity.Role;
 import lombok.Data;
 
 /**
