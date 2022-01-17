@@ -18,6 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.xml.bind.DatatypeConverter;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import static com.hendisantika.config.MessageStrings.USER_CREATED;
@@ -101,6 +103,15 @@ public class UserService {
         }
 
         return new SignInResponseDto("success", token.getToken());
+    }
+
+    private String hashPassword(String password) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        md.update(password.getBytes());
+        byte[] digest = md.digest();
+        String myHash = DatatypeConverter
+                .printHexBinary(digest).toUpperCase();
+        return myHash;
     }
 
 }
