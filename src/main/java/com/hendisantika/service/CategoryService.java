@@ -30,4 +30,8 @@ public class CategoryService {
     public List<Category> listCategories() {
         return categoryRepository.findAll();
     }
+
+    public void createCategory(Category category) {
+        categoryRepository.save(category);
+    }
 }
