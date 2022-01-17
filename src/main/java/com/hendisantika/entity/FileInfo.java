@@ -1,5 +1,6 @@
 package com.hendisantika.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -12,6 +13,7 @@ import lombok.Data;
  * Time: 08.08
  */
 @Data
+@AllArgsConstructor
 public class FileInfo {
     private String name;
     private String url;
