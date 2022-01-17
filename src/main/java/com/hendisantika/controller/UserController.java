@@ -57,7 +57,7 @@ public class UserController {
 
     //TODO token should be updated
     @PostMapping("/signIn")
-    public SignInResponseDto Signup(@RequestBody SignInDto signInDto) throws CustomException {
+    public SignInResponseDto signIn(@RequestBody SignInDto signInDto) throws CustomException {
         return userService.signIn(signInDto);
     }
 
