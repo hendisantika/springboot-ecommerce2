@@ -5,6 +5,8 @@ import com.hendisantika.repository.WishListRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Created by IntelliJ IDEA.
  * Project : springboot-ecommerce2
@@ -26,5 +28,9 @@ public class WishListService {
 
     public void createWishlist(WishList wishList) {
         wishListRepository.save(wishList);
+    }
+
+    public List<WishList> readWishList(Integer userId) {
+        return wishListRepository.findAllByUserIdOrderByCreatedDateDesc(userId);
     }
 }
