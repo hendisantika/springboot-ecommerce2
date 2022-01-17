@@ -1,5 +1,6 @@
 package com.hendisantika.service;
 
+import com.hendisantika.entity.WishList;
 import com.hendisantika.repository.WishListRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,5 +22,9 @@ public class WishListService {
 
     public WishListService(WishListRepository wishListRepository) {
         this.wishListRepository = wishListRepository;
+    }
+
+    public void createWishlist(WishList wishList) {
+        wishListRepository.save(wishList);
     }
 }
