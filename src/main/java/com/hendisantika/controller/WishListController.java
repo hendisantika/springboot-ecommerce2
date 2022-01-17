@@ -1,6 +1,8 @@
 package com.hendisantika.controller;
 
+import com.hendisantika.common.ApiResponse;
 import com.hendisantika.dto.ProductDto;
+import com.hendisantika.entity.Product;
 import com.hendisantika.entity.WishList;
 import com.hendisantika.service.AuthenticationService;
 import com.hendisantika.service.ProductService;
@@ -10,7 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -44,5 +49,14 @@ public class WishListController {
         }
 
         return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<ApiResponse> addWishList(@RequestBody Product product, @RequestParam("token") String token) {
+        int userId = authenticationService.getUser(token).getId();
+        WishList wishList = new WishList(userId, product.getId());
+        wishListService.createWishlist(wishList);
+        return new ResponseEntity<>(new ApiResponse(true, "Add to wishlist"), HttpStatus.CREATED);
+
     }
 }
