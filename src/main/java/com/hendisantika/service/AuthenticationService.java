@@ -3,6 +3,7 @@ package com.hendisantika.service;
 import com.hendisantika.entity.AuthenticationToken;
 import com.hendisantika.entity.User;
 import com.hendisantika.repository.TokenRepository;
+import com.hendisantika.util.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,5 +28,15 @@ public class AuthenticationService {
 
     public AuthenticationToken getToken(User user) {
         return tokenRepository.findTokenByUser(user);
+    }
+
+    public User getUser(String token) {
+        AuthenticationToken authenticationToken = tokenRepository.findTokenByToken(token);
+        if (Helper.notNull(authenticationToken)) {
+            if (Helper.notNull(authenticationToken.getUser())) {
+                return authenticationToken.getUser();
+            }
+        }
+        return null;
     }
 }
