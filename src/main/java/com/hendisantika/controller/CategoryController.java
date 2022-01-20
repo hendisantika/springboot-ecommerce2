@@ -63,6 +63,23 @@ public class CategoryController {
     }
 
     @PostMapping("/create")
+    @Operation(
+            summary = "Create New Category",
+            description = "Create New Category.",
+            tags = {"Category"})
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    description = "Success",
+                    responseCode = "200",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation =
+                            Category.class))
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(description = "Not found", responseCode = "404",
+                    content = @Content),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(description = "Internal error", responseCode = "500"
+                    , content = @Content)
+    }
+    )
     public ResponseEntity<ApiResponse> createCategory(@Valid @RequestBody Category category) {
         if (Helper.notNull(categoryService.readCategory(category.getCategoryName()))) {
             return new ResponseEntity<>(new ApiResponse(false, "category already exists"), HttpStatus.CONFLICT);
@@ -71,8 +88,24 @@ public class CategoryController {
         return new ResponseEntity<>(new ApiResponse(true, "created the category"), HttpStatus.CREATED);
     }
 
-    //TODO create an UPDATE method Giridhar
     @PostMapping("/update/{categoryID}")
+    @Operation(
+            summary = "Update Category by Category ID",
+            description = "Update Category by Category ID.",
+            tags = {"Category"})
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    description = "Success",
+                    responseCode = "200",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation =
+                            Category.class))
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(description = "Not found", responseCode = "404",
+                    content = @Content),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(description = "Internal error", responseCode = "500"
+                    , content = @Content)
+    }
+    )
     public ResponseEntity<ApiResponse> updateCategory(@PathVariable("categoryID") long categoryID,
                                                       @Valid @RequestBody Category category) {
         // Check to see if the category exists.
