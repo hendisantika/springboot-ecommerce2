@@ -5,6 +5,11 @@ import com.hendisantika.dto.ProductDto;
 import com.hendisantika.entity.Category;
 import com.hendisantika.service.CategoryService;
 import com.hendisantika.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +35,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/product")
+@Tag(name = "Product", description = "Endpoints for managing Product")
 public class ProductController {
     @Autowired
     private ProductService productService;
@@ -38,12 +44,46 @@ public class ProductController {
     private CategoryService categoryService;
 
     @GetMapping("/")
+    @Operation(
+            summary = "Get List Product",
+            description = "Get List Product.",
+            tags = {"Product"})
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    description = "Success",
+                    responseCode = "200",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation =
+                            ProductDto.class))
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(description = "Not found", responseCode = "404",
+                    content = @Content),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(description = "Internal error", responseCode = "500"
+                    , content = @Content)
+    }
+    )
     public ResponseEntity<List<ProductDto>> getProducts() {
         List<ProductDto> body = productService.listProducts();
         return new ResponseEntity<>(body, HttpStatus.OK);
     }
 
     @PostMapping("/add")
+    @Operation(
+            summary = "Add New Product",
+            description = "Add New Product.",
+            tags = {"Product"})
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    description = "Success",
+                    responseCode = "200",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation =
+                            ApiResponse.class))
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(description = "Not found", responseCode = "404",
+                    content = @Content),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(description = "Internal error", responseCode = "500"
+                    , content = @Content)
+    }
+    )
     public ResponseEntity<ApiResponse> addProduct(@RequestBody ProductDto productDto) {
         Optional<Category> optionalCategory = categoryService.readCategory(productDto.getCategoryId());
         if (!optionalCategory.isPresent()) {
@@ -55,6 +95,23 @@ public class ProductController {
     }
 
     @PostMapping("/update/{productID}")
+    @Operation(
+            summary = "Get Product By ID",
+            description = "Get Product By ID.",
+            tags = {"Product"})
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    description = "Success",
+                    responseCode = "200",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation =
+                            ApiResponse.class))
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(description = "Not found", responseCode = "404",
+                    content = @Content),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(description = "Internal error", responseCode = "500"
+                    , content = @Content)
+    }
+    )
     public ResponseEntity<ApiResponse> updateProduct(@PathVariable("productID") long productID,
                                                      @RequestBody @Valid ProductDto productDto) {
         Optional<Category> optionalCategory = categoryService.readCategory(productDto.getCategoryId());
