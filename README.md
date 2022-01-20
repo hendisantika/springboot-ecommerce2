@@ -6,3 +6,9 @@
 2. Navigate to the folder: `cd springboot-ecommerce2`
 3. Make sure that your DB is UP & Running. Then change the application.properties file based on your credentials.
 4. Run the application: `mvn clean spring-boot:run`
+
+### Image Screen shot
+
+Swagger UI
+
+![Swagger UI](upload-dir/swagger.png "Swagger UI")
