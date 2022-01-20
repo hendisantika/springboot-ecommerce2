@@ -2,6 +2,7 @@ package com.hendisantika.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -20,6 +21,7 @@ import java.util.Set;
 @Table(name = "categories")
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class Category {
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY,
