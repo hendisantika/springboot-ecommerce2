@@ -2,6 +2,11 @@ package com.hendisantika.controller;
 
 import com.hendisantika.entity.FileInfo;
 import com.hendisantika.service.FileStoreService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -32,17 +37,52 @@ import java.util.stream.Stream;
  */
 @RestController
 @RequestMapping("/fileUpload")
+@Tag(name = "File Upload", description = "Endpoints for File Upload")
 public class FileUploadController {
 
     @Autowired
     private FileStoreService fileStoreService;
 
     @PostMapping("/")
+    @Operation(
+            summary = "Handle Files Upload",
+            description = "Handle Files Upload.",
+            tags = {"File Upload"})
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    description = "Success",
+                    responseCode = "200",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation =
+                            String.class))
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(description = "Not found", responseCode = "404",
+                    content = @Content),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(description = "Internal error", responseCode = "500"
+                    , content = @Content)
+    }
+    )
     public String handleFileUpload(@RequestParam("file") MultipartFile file) {
         return fileStoreService.store(file);
     }
 
     @GetMapping("/")
+    @Operation(
+            summary = "List Files",
+            description = "List Files.",
+            tags = {"File Upload"})
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    description = "Success",
+                    responseCode = "200",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation =
+                            FileInfo.class))
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(description = "Not found", responseCode = "404",
+                    content = @Content),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(description = "Internal error", responseCode = "500"
+                    , content = @Content)
+    }
+    )
     public ResponseEntity<List<FileInfo>> getListFiles() {
         List<FileInfo> fileInfos = fileStoreService.loadAll().map(path -> {
             String filename = path.getFileName().toString();
@@ -57,6 +97,23 @@ public class FileUploadController {
     }
 
     @GetMapping("/files/{filename:.+}")
+    @Operation(
+            summary = "Get File by Filename",
+            description = "Get File by Filename.",
+            tags = {"File Upload"})
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    description = "Success",
+                    responseCode = "200",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation =
+                            Resource.class))
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(description = "Not found", responseCode = "404",
+                    content = @Content),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(description = "Internal error", responseCode = "500"
+                    , content = @Content)
+    }
+    )
     public ResponseEntity<Resource> getFile(@PathVariable String filename) {
         Resource file = fileStoreService.load(filename);
         return ResponseEntity.ok()
