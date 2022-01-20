@@ -42,7 +42,7 @@ public class UserProfileController {
     @Operation(
             summary = "Get All Users Profile",
             description = "Get All Users Profile.",
-            tags = {"User"})
+            tags = {"User Profile"})
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(
                     description = "Success",
@@ -65,7 +65,7 @@ public class UserProfileController {
     @Operation(
             summary = "Add New User Survey",
             description = "Add New User Survey.",
-            tags = {"User"})
+            tags = {"User Profile"})
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(
                     description = "Success",
